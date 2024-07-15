@@ -8,7 +8,12 @@ import {
   streamUI,
   createStreamableValue
 } from 'ai/rsc'
-import { openai } from '@ai-sdk/openai'
+import { createOllama } from 'ollama-ai-provider';
+
+const ollama = createOllama({
+  baseURL: process.env.OLLAMA_API_URL,
+});
+const model = ollama('mistral');
 
 import {
   spinner,
@@ -125,9 +130,8 @@ async function submitUserMessage(content: string) {
 
   let textStream: undefined | ReturnType<typeof createStreamableValue<string>>
   let textNode: undefined | React.ReactNode
-
   const result = await streamUI({
-    model: openai('gpt-3.5-turbo'),
+    model: model,
     initial: <SpinnerMessage />,
     system: `\
     You are a stock trading conversation bot and you can help users buy stocks, step by step.

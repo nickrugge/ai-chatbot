@@ -11,10 +11,9 @@ export const useStreamableText = (
   useEffect(() => {
     ;(async () => {
       if (typeof content === 'object') {
-        let value = ''
         for await (const delta of readStreamableValue(content)) {
           if (typeof delta === 'string') {
-            setRawContent((value = value + delta))
+            setRawContent(delta)
           }
         }
       }
